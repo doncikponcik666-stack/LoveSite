@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Наша История Любви ❤️♾️</title>
+   <!-- Подключаем красивые романтичные шрифты -->
+   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+   <style>
+       * {
+           margin: 0;
+           padding: 0;
+           box-sizing: border-box;
+       }
+
+       body {
+           font-family: 'Montserrat', sans-serif;
+           color: #fff;
+           /* Фон из Фото 8 */
+           background: url('bg8.jpg') no-repeat center center fixed;
+           background-size: cover;
+           min-height: 100vh;
+           overflow-x: hidden;
+           position: relative;
+       }
+
+       /* Затемняющий градиент поверх фона для идеальной читаемости */
+       body::before {
+           content: '';
+           position: fixed;
+           top: 0; left: 0; width: 100%; height: 100%;
+           background: radial-gradient(circle at center, rgba(15, 5, 29, 0.45) 0%, rgba(10, 2, 20, 0.8) 100%);
+           z-index: -1;
+       }
+
+       /* Холст для падающих лепестков роз */
+       #petals-canvas {
+           position: fixed;
+           top: 0;
+           left: 0;
+           width: 100%;
+           height: 100%;
+           pointer-events: none;
+           z-index: 10;
+       }
+
+       /* Плавающая кнопка музыки */
+       .music-btn {
+           position: fixed;
+           bottom: 25px;
+           right: 25px;
+           z-index: 500;
+           background: linear-gradient(135deg, #ff4da6, #9b51e0);
+           border: 2px solid #fff;
+           color: #fff;
+           padding: 14px 24px;
+           border-radius: 50px;
+           font-family: 'Montserrat', sans-serif;
+           font-weight: 600;
+           font-size: 0.95rem;
+           cursor: pointer;
+           box-shadow: 0 0 20px rgba(255, 77, 166, 0.8);
+           display: flex;
+           align-items: center;
+           gap: 10px;
+           transition: all 0.3s ease;
+       }
+
+       .music-btn:hover {
+           transform: scale(1.08);
+           box-shadow: 0 0 30px rgba(255, 182, 193, 1);
+       }
+
+       .music-btn.playing {
+           animation: pulseMusic 1.5s infinite alternate;
+           background: linear-gradient(135deg, #ff1a8c, #ff66b2);
+       }
+
+       @keyframes pulseMusic {
+           from { box-shadow: 0 0 15px #ff4da6, 0 0 30px #ff1a8c; transform: scale(1); }
+           to { box-shadow: 0 0 25px #ff99cc, 0 0 55px #ff1a8c; transform: scale(1.05); }
+       }
+
+       /* Главный контейнер */
+       .container {
+           max-width: 1200px;
+           margin: 0 auto;
+           padding: 30px 20px 100px;
+           position: relative;
+           z-index: 20;
+           text-align: center;
+       }
+
+       /* Шапка сайта */
+       header {
+           margin-bottom: 35px;
+           animation: fadeInDown 1.2s ease;
+       }
+
+       h1.main-title {
+           font-family: 'Great Vibes', cursive;
+           font-size: 4.5rem;
+           color: #ffe6f2;
+           text-shadow: 0 0 15px #ff4da6, 0 0 30px #ff1a8c, 0 0 45px #e60073;
+           margin-bottom: 10px;
+           font-weight: normal;
+       }
+
+       .subtitle {
+           font-size: 1.2rem;
+           letter-spacing: 2px;
+           color: #ffd9ec;
+           text-transform: uppercase;
+           text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+       }
+
+       /* Таймер отношений */
+       .love-timer {
+           display: inline-flex;
+           flex-wrap: wrap;
+           justify-content: center;
+           gap: 15px;
+           margin-top: 25px;
+           background: rgba(255, 255, 255, 0.08);
+           backdrop-filter: blur(12px);
+           padding: 18px 30px;
+           border-radius: 25px;
+           border: 1px solid rgba(255, 182, 193, 0.35);
+           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 105, 180, 0.25);
+       }
+
+       .timer-unit {
+           min-width: 75px;
+       }
+
+       .timer-unit span {
+           display: block;
+           font-size: 2rem;
+           font-weight: 600;
+           color: #ff99cc;
+           text-shadow: 0 0 10px rgba(255, 153, 204, 0.8);
+       }
+
+       .timer-unit p {
+           font-size: 0.75rem;
+           text-transform: uppercase;
+           letter-spacing: 1px;
+           color: #fce4ec;
+       }
+
+       /* Навигационные кнопки */
+       .nav-buttons {
+           display: flex;
+           justify-content: center;
+           flex-wrap: wrap;
+           gap: 20px;
+           margin: 40px 0;
+       }
+
+       .nav-btn {
+           background: linear-gradient(135deg, rgba(255, 105, 180, 0.25), rgba(147, 112, 219, 0.25));
+           backdrop-filter: blur(10px);
+           border: 2px solid rgba(255, 182, 193, 0.6);
+           color: #fff;
+           padding: 15px 34px;
+           font-size: 1.15rem;
+           font-weight: 600;
+           border-radius: 50px;
+           cursor: pointer;
+           transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+           box-shadow: 0 0 15px rgba(255, 105, 180, 0.3), inset 0 0 15px rgba(255, 182, 193, 0.2);
+           display: flex;
+           align-items: center;
+           gap: 10px;
+           font-family: 'Montserrat', sans-serif;
+       }
+
+       .nav-btn:hover, .nav-btn.active {
+           background: linear-gradient(135deg, #ff4da6, #9b51e0);
+           border-color: #fff;
+           transform: translateY(-5px) scale(1.05);
+           box-shadow: 0 10px 25px rgba(255, 77, 166, 0.6), 0 0 30px rgba(255, 182, 193, 0.8);
+       }
+
+       /* Секции контента */
+       .section {
+           display: none;
+           animation: fadeInUp 0.8s ease forwards;
+       }
+
+       .section.active {
+           display: block;
+       }
+
+       /* ================= 1. НАШИ ФОТКИ (В РАМКЕ 9) ================= */
+       .gallery-grid {
+           display: grid;
+           grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+           gap: 35px;
+           margin-top: 20px;
+       }
+
+       .photo-frame-card {
+           position: relative;
+           background: url('frame9.jpg') no-repeat center center;
+           background-size: 100% 100%;
+           border-radius: 22px;
+           padding: 11% 22%;
+           box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 105, 180, 0.35);
+           transition: transform 0.4s ease, box-shadow 0.4s ease;
+           cursor: pointer;
+           aspect-ratio: 16 / 10;
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           justify-content: center;
+           overflow: hidden;
+       }
+
+       .photo-frame-card:hover {
+           transform: translateY(-8px) scale(1.03);
+           box-shadow: 0 20px 45px rgba(0, 0, 0, 0.85), 0 0 35px rgba(255, 182, 193, 0.75);
+       }
+
+       .photo-inner {
+           width: 100%;
+           height: 100%;
+           border-radius: 12px;
+           overflow: hidden;
+           position: relative;
+           border: 1.5px solid rgba(255, 220, 240, 0.6);
+           box-shadow: 0 0 20px rgba(0,0,0,0.8);
+       }
+
+       .photo-inner img {
+           width: 100%;
+           height: 100%;
+           object-fit: cover;
+           transition: transform 0.6s ease;
+       }
+
+       .photo-frame-card:hover .photo-inner img {
+           transform: scale(1.08);
+       }
+
+       .photo-caption {
+           position: absolute;
+           bottom: 0;
+           left: 0;
+           right: 0;
+           background: linear-gradient(transparent, rgba(15, 2, 25, 0.9));
+           padding: 15px 10px 8px;
+           font-size: 0.85rem;
+           color: #ffe6f2;
+           opacity: 0;
+           transition: opacity 0.3s ease;
+       }
+
+       .photo-frame-card:hover .photo-caption {
+           opacity: 1;
+       }
+
+       /* ================= 2. РОМАНТИЧНЫЕ ИСТОРИИ (В РАМКЕ 9) ================= */
+       .stories-list {
+           display: flex;
+           flex-direction: column;
+           gap: 45px;
+           align-items: center;
+       }
+
+       .story-frame-box {
+           position: relative;
+           width: 100%;
+           max-width: 950px;
+           background: url('frame9.jpg') no-repeat center center;
+           background-size: 100% 100%;
+           border-radius: 25px;
+           padding: 8% 23%;
+           box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 30px rgba(255, 105, 180, 0.3);
+           transition: transform 0.3s ease;
+       }
+
+       .story-frame-box:hover {
+           transform: scale(1.015);
+       }
+
+       .story-content {
+           background: rgba(15, 8, 30, 0.65);
+           backdrop-filter: blur(6px);
+           padding: 25px 30px;
+           border-radius: 16px;
+           border: 1px solid rgba(255, 192, 203, 0.25);
+           max-height: 360px;
+           overflow-y: auto;
+           text-align: left;
+       }
+
+       .story-content::-webkit-scrollbar {
+           width: 6px;
+       }
+       .story-content::-webkit-scrollbar-thumb {
+           background: linear-gradient(#ff66b2, #ffd700);
+           border-radius: 10px;
+       }
+
+       .story-date {
+           display: inline-block;
+           background: linear-gradient(90deg, #ff4da6, #ff9966);
+           padding: 5px 14px;
+           border-radius: 20px;
+           font-size: 0.8rem;
+           font-weight: 600;
+           margin-bottom: 12px;
+           box-shadow: 0 0 10px rgba(255, 77, 166, 0.5);
+       }
+
+       .story-title {
+           font-family: 'Cormorant Garamond', serif;
+           font-size: 2rem;
+           color: #ffd9ec;
+           margin-bottom: 14px;
+           text-shadow: 0 0 12px rgba(255, 105, 180, 0.6);
+       }
+
+       .story-text {
+           font-size: 1.02rem;
+           line-height: 1.75;
+           color: #f8eaf2;
+           font-weight: 300;
+       }
+
+       .story-text strong {
+           color: #ffb3d9;
+           font-weight: 600;
+       }
+
+       /* ================= 3. ПУПУСИК (В РАМКЕ 10) ================= */
+       .pupusik-wrapper {
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           margin-top: 20px;
+       }
+
+       .frame10-container {
+           position: relative;
+           width: 100%;
+           max-width: 920px;
+           aspect-ratio: 16 / 9;
+           background: url('frame10.jpg') no-repeat center center;
+           background-size: 100% 100%;
+           border-radius: 28px;
+           box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 182, 193, 0.5);
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           padding: 14% 18%;
+           overflow: hidden;
+           animation: pulseGlow 4s infinite alternate;
+       }
+
+       .pupusik-message {
+           font-family: 'Cormorant Garamond', serif;
+           font-style: italic;
+           font-weight: 600;
+           font-size: clamp(1.2rem, 2.5vw, 2.15rem);
+           line-height: 1.5;
+           color: #fff9e6;
+           text-align: center;
+           text-shadow:
+               0 2px 4px rgba(0, 0, 0, 0.7),
+               0 0 15px rgba(255, 215, 0, 0.7),
+               0 0 30px rgba(255, 105, 180, 0.8);
+           z-index: 2;
+       }
+
+       /* Модальное окно для увеличения фото */
+       .lightbox {
+           display: none;
+           position: fixed;
+           top: 0; left: 0; width: 100%; height: 100%;
+           background: rgba(5, 1, 12, 0.92);
+           backdrop-filter: blur(10px);
+           z-index: 1000;
+           justify-content: center;
+           align-items: center;
+           padding: 20px;
+       }
+
+       .lightbox.open {
+           display: flex;
+           animation: fadeIn 0.3s ease;
+       }
+
+       .lightbox-img-wrapper {
+           position: relative;
+           max-width: 90%;
+           max-height: 85vh;
+           background: url('frame9.jpg') no-repeat center center;
+           background-size: 100% 100%;
+           padding: 50px 100px;
+           border-radius: 25px;
+           box-shadow: 0 0 50px rgba(255, 105, 180, 0.6);
+       }
+
+       .lightbox img {
+           max-width: 100%;
+           max-height: 68vh;
+           border-radius: 12px;
+           display: block;
+           border: 2px solid #ffb6c1;
+       }
+
+       .close-lightbox {
+           position: absolute;
+           top: 20px;
+           right: 30px;
+           font-size: 2.5rem;
+           color: #fff;
+           cursor: pointer;
+           text-shadow: 0 0 15px #ff1a8c;
+           transition: transform 0.2s;
+       }
+
+       .close-lightbox:hover {
+           transform: scale(1.2);
+       }
+
+       /* Искры за курсором */
+       .cursor-heart {
+           position: fixed;
+           pointer-events: none;
+           font-size: 16px;
+           z-index: 999;
+           animation: floatUp 1s ease-out forwards;
+       }
+
+       /* Анимации */
+       @keyframes fadeInUp {
+           from { opacity: 0; transform: translateY(30px); }
+           to { opacity: 1; transform: translateY(0); }
+       }
+
+       @keyframes fadeInDown {
+           from { opacity: 0; transform: translateY(-30px); }
+           to { opacity: 1; transform: translateY(0); }
+       }
+
+       @keyframes fadeIn {
+           from { opacity: 0; }
+           to { opacity: 1; }
+       }
+
+       @keyframes pulseGlow {
+           0% { box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 182, 193, 0.4); }
+           100% { box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 55px rgba(255, 105, 180, 0.85); }
+       }
+
+       @keyframes floatUp {
+           0% { opacity: 1; transform: translateY(0) scale(1); }
+           100% { opacity: 0; transform: translateY(-40px) scale(1.6); }
+       }
+
+       /* Адаптивность для телефонов */
+       @media (max-width: 768px) {
+           h1.main-title { font-size: 3.2rem; }
+           .story-frame-box {
+               padding: 12% 16%;
+               background-size: cover;
+           }
+           .story-content {
+               padding: 18px;
+               max-height: 420px;
+           }
+           .story-title { font-size: 1.5rem; }
+           .story-text { font-size: 0.95rem; }
+           .frame10-container {
+               aspect-ratio: auto;
+               min-height: 320px;
+               padding: 16% 14%;
+           }
+           .lightbox-img-wrapper {
+               padding: 25px 40px;
+           }
+           .music-btn {
+               bottom: 15px;
+               right: 15px;
+               padding: 12px 18px;
+               font-size: 0.85rem;
+           }
+       }
+   </style>
+</head>
+<body>
+
+   <!-- Падающие лепестки роз -->
+   <canvas id="petals-canvas"></canvas>
+
+   <!-- Аудиоплеер и кнопка включения/выключения музыки -->
+   <audio id="bg-music" src="music.mp3" loop></audio>
+   <button class="music-btn" id="music-toggle" onclick="toggleMusic()">
+       🎵 Включить музыку
+   </button>
+
+   <div class="container">
+       <!-- Шапка сайта -->
+       <header>
+           <h1 class="main-title">Наша История Любви</h1>
+           <p class="subtitle">Вместе и навсегда с 20 февраля 2026 года ✨</p>
+
+           <!-- Живой счетчик -->
+           <div class="love-timer" id="timer">
+               <div class="timer-unit"><span id="days">0</span><p>Дней</p></div>
+               <div class="timer-unit"><span id="hours">0</span><p>Часов</p></div>
+               <div class="timer-unit"><span id="minutes">0</span><p>Минут</p></div>
+               <div class="timer-unit"><span id="seconds">0</span><p>Секунд</p></div>
+           </div>
+       </header>
+
+       <!-- Кнопки меню -->
+       <nav class="nav-buttons">
+           <button class="nav-btn active" onclick="openTab('photos', this)">📸 Наши фотки</button>
+           <button class="nav-btn" onclick="openTab('stories', this)">💌 Романтичные истории</button>
+           <button class="nav-btn" onclick="openTab('pupusik', this)">🥰 Пупусик</button>
+       </nav>
+
+       <!-- ================= ВКЛАДКА 1: НАШИ ФОТКИ ================= -->
+       <section id="photos" class="section active">
+           <div class="gallery-grid">
+               <div class="photo-frame-card" onclick="openLightbox('photo1.jpg')">
+                   <div class="photo-inner">
+                       <img src="photo1.jpg" alt="Воспоминание 1">
+                       <div class="photo-caption">Самые милые моменты 🎀</div>
+                   </div>
+               </div>
+               <div class="photo-frame-card" onclick="openLightbox('photo2.jpg')">
+                   <div class="photo-inner">
+                       <img src="photo2.jpg" alt="Воспоминание 2">
+                       <div class="photo-caption">Наше тепло и улыбки ❤️</div>
+                   </div>
+               </div>
+               <div class="photo-frame-card" onclick="openLightbox('photo3.jpg')">
+                   <div class="photo-inner">
+                       <img src="photo3.jpg" alt="Воспоминание 3">
+                       <div class="photo-caption">На высоте от счастья ✨</div>
+                   </div>
+               </div>
+               <div class="photo-frame-card" onclick="openLightbox('photo4.jpg')">
+                   <div class="photo-inner">
+                       <img src="photo4.jpg" alt="Воспоминание 4">
+                       <div class="photo-caption">Свободная, смешная и самая любимая 😘</div>
+                   </div>
+               </div>
+               <div class="photo-frame-card" onclick="openLightbox('photo5.jpg')">
+                   <div class="photo-inner">
+                       <img src="photo5.jpg" alt="Воспоминание 5">
+                       <div class="photo-caption">Ночные прогулки и нежность 🌙</div>
+                   </div>
+               </div>
+               <div class="photo-frame-card" onclick="openLightbox('photo6.jpg')">
+                   <div class="photo-inner">
+                       <img src="photo6.jpg" alt="Воспоминание 6">
+                       <div class="photo-caption">В твоих объятиях весь мой мир 🫂</div>
+                   </div>
+               </div>
+               <div class="photo-frame-card" onclick="openLightbox('photo7.jpg')">
+                   <div class="photo-inner">
+                       <img src="photo7.jpg" alt="Воспоминание 7">
+                       <div class="photo-caption">Вдвоём против всего мира ♾️</div>
+                   </div>
+               </div>
+           </div>
+       </section>
+
+       <!-- ================= ВКЛАДКА 2: РОМАНТИЧНЫЕ ИСТОРИИ ================= -->
+       <section id="stories" class="section">
+           <div class="stories-list">
+
+               <!-- История 1: Колледж и горящие глаза -->
+               <div class="story-frame-box">
+                   <div class="story-content">
+                       <span class="story-date">✨ Как всё начиналось</span>
+                       <h3 class="story-title">Взгляды в колледже и огонь в моих глазах</h3>
+                       <p class="story-text">
+                           Я до сих пор помню каждый момент, когда встречал тебя в коридорах нашего колледжа. Вокруг всегда была суета, шум, спешащие куда-то студенты — но стоило тебе появиться, как весь остальной мир для меня просто выключался. <br><br>
+                           <strong>Мои глаза буквально горели</strong> каждый раз, когда я смотрел на тебя. В этом взгляде было столько огня, восхищения и безумного притяжения, что скрыть это было просто невозможно. Я ловил каждую твою улыбку, каждый твой взгляд, смотрел на твои губы и думал только об одном — <strong>как же сильно я хочу подойти, прижать тебя к себе и поцеловать</strong>. Именно тогда я понял, что пропал в тебе окончательно и бесповоротно.
+                       </p>
+                   </div>
+               </div>
+
+               <!-- История 2: Первый поцелуй 17.02 -->
+               <div class="story-frame-box">
+                   <div class="story-content">
+                       <span class="story-date">💋 17 февраля 2026</span>
+                       <h3 class="story-title">Наш первый поцелуй — горячий и бесконечно нежный</h3>
+                       <p class="story-text">
+                           17 февраля — день, когда моя самая заветная мечта стала реальностью. Воздух между нами буквально искрил от напряжения, а сердце билось так громко, будто хотело выпрыгнуть из груди. Когда мы наконец придвинулись друг к другу, время остановилось.<br><br>
+                           Этот первый поцелуй был одновременно <strong>невероятно горячим, страстным и до мурашек нежным</strong>. Я до сих пор помню, <strong>какими мягкими, тёплыми и нежными были твои губки</strong>. В одно мгновение внутри меня взорвалась целая вселенная. Не хотелось отрываться ни на секунду — казалось, в этом поцелуе мы сказали друг другу больше, чем могли бы выразить тысячи слов.
+                       </p>
+                   </div>
+               </div>
+
+               <!-- История 3: Начало отношений 20.02.2026 -->
+               <div class="story-frame-box">
+                   <div class="story-content">
+                       <span class="story-date">❤️ 20 февраля 2026</span>
+                       <h3 class="story-title">День, когда «Я» и «Ты» стали «Мы»</h3>
+                       <p class="story-text">
+                           После того самого поцелуя мы уже не могли представить ни одного дня друг без друга. И <strong>20 февраля 2026 года</strong> стало нашей главной точкой отсчёта — днём, когда началась наша официальная история любви.<br><br>
+                           С этого дня ты стала для меня не просто девушкой мечты из колледжа, а моим самым родным человеком, моим уютом, вдохновением и счастьем. Каждая наша прогулка, каждая фотография, каждый смех и каждое объятие — это бесценные страницы книги, которую мы пишем вместе каждый день.
+                       </p>
+                   </div>
+               </div>
+
+           </div>
+       </section>
+
+       <!-- ================= ВКЛАДКА 3: ПУПУСИК (В РАМКЕ 10) ================= -->
+       <section id="pupusik" class="section">
+           <div class="pupusik-wrapper">
+               <div class="frame10-container">
+                   <p class="pupusik-message" id="typewriter-text">
+                       «Люблю тебя очень сильно мое солнышко, мне не передать словами как я тобой дорожу, ты мое счастье и опора, Любовь мое, солнышко, Ути путька, моя зайка😘♥️♾️🫂<br><br>Твой пупусик»
+                   </p>
+               </div>
+           </div>
+       </section>
+   </div>
+
+   <!-- Модальное окно для просмотра фото -->
+   <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+       <span class="close-lightbox">×</span>
+       <div class="lightbox-img-wrapper" onclick="event.stopPropagation()">
+           <img id="lightbox-img" src="" alt="Просмотр фото">
+       </div>
+   </div>
+
+   <script>
+       // 1. УПРАВЛЕНИЕ ФОНОВОЙ МУЗЫКОЙ (ВКЛ / ВЫКЛ)
+       const music = document.getElementById('bg-music');
+       const musicBtn = document.getElementById('music-toggle');
+       let isPlaying = false;
+
+       music.volume = 0.5; // Комфортная громкость 50%
+
+       function toggleMusic() {
+           if (isPlaying) {
+               music.pause();
+               musicBtn.innerHTML = '🎵 Включить музыку';
+               musicBtn.classList.remove('playing');
+               isPlaying = false;
+           } else {
+               music.play().then(() => {
+                   musicBtn.innerHTML = '⏸ Выключить музыку ❤️';
+                   musicBtn.classList.add('playing');
+                   isPlaying = true;
+               }).catch(err => {
+                   alert('Проверь, лежит ли файл music.mp3 в одной папке с сайтом!');
+               });
+           }
+       }
+
+       // 2. ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК
+       const fullPupusikText = "«Люблю тебя очень сильно мое солнышко, мне не передать словами как я тобой дорожу, ты мое счастье и опора, Любовь мое, солнышко, Ути путька, моя зайка😘♥️♾️🫂\n\nТвой пупусик»";
+       let typingInterval;
+
+       function openTab(tabId, btnElement) {
+           document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+           document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+
+           document.getElementById(tabId).classList.add('active');
+           btnElement.classList.add('active');
+
+           if (tabId === 'pupusik') {
+               startTypewriter();
+           }
+       }
+
+       function startTypewriter() {
+           const el = document.getElementById('typewriter-text');
+           el.innerHTML = '';
+           clearInterval(typingInterval);
+           let i = 0;
+           const chars = Array.from(fullPupusikText);
+           typingInterval = setInterval(() => {
+               if (i < chars.length) {
+                   el.innerHTML += chars[i] === '\n' ? '<br>' : chars[i];
+                   i++;
+               } else {
+                   clearInterval(typingInterval);
+               }
+           }, 35);
+       }
+
+       // 3. ТАЙМЕР ОТНОШЕНИЙ (С 20 ФЕВРАЛЯ 2026 ГОДА)
+       const startDate = new Date(2026, 1, 20, 0, 0, 0);
+
+       function updateTimer() {
+           const now = new Date();
+           const diff = Math.max(0, now - startDate);
+
+           const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+           const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+           const minutes = Math.floor((diff / 1000 / 60) % 60);
+           const seconds = Math.floor((diff / 1000) % 60);
+
+           document.getElementById('days').textContent = days;
+           document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+           document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+           document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+       }
+       setInterval(updateTimer, 1000);
+       updateTimer();
+
+       // 4. МОДАЛЬНОЕ ОКНО ФОТОГРАФИЙ
+       function openLightbox(src) {
+           document.getElementById('lightbox-img').src = src;
+           document.getElementById('lightbox').classList.add('open');
+       }
+
+       function closeLightbox() {
+           document.getElementById('lightbox').classList.remove('open');
+       }
+
+       // 5. АНИМАЦИЯ ПАДАЮЩИХ ЛЕПЕСТКОВ РОЗ НА CANVAS
+       const canvas = document.getElementById('petals-canvas');
+       const ctx = canvas.getContext('2d');
+
+       function resizeCanvas() {
+           canvas.width = window.innerWidth;
+           canvas.height = window.innerHeight;
+       }
+       window.addEventListener('resize', resizeCanvas);
+       resizeCanvas();
+
+       class Petal {
+           constructor() {
+               this.reset(true);
+           }
+
+           reset(initial = false) {
+               this.x = Math.random() * canvas.width;
+               this.y = initial ? Math.random() * canvas.height : -30;
+               this.size = Math.random() * 12 + 8;
+               this.speedY = Math.random() * 1.4 + 0.7;
+               this.speedX = Math.random() * 1.2 - 0.6;
+               this.angle = Math.random() * Math.PI * 2;
+               this.spin = (Math.random() - 0.5) * 0.03;
+               this.flip = Math.random() * Math.PI;
+               this.flipSpeed = Math.random() * 0.03 + 0.01;
+               const colors = [
+                   'rgba(255, 77, 136, 0.8)',
+                   'rgba(255, 128, 171, 0.85)',
+                   'rgba(220, 20, 60, 0.75)',
+                   'rgba(255, 182, 193, 0.85)'
+               ];
+               this.color = colors[Math.floor(Math.random() * colors.length)];
+           }
+
+           update() {
+               this.y += this.speedY;
+               this.x += this.speedX + Math.sin(this.y * 0.015) * 0.6;
+               this.angle += this.spin;
+               this.flip += this.flipSpeed;
+
+               if (this.y > canvas.height + 30 || this.x < -50 || this.x > canvas.width + 50) {
+                   this.reset(false);
+               }
+           }
+
+           draw() {
+               ctx.save();
+               ctx.translate(this.x, this.y);
+               ctx.rotate(this.angle);
+               ctx.scale(1, Math.sin(this.flip));
+
+               ctx.beginPath();
+               ctx.moveTo(0, 0);
+               ctx.bezierCurveTo(this.size / 2, -this.size / 2, this.size, this.size / 3, 0, this.size);
+               ctx.bezierCurveTo(-this.size, this.size / 3, -this.size / 2, -this.size / 2, 0, 0);
+               ctx.fillStyle = this.color;
+               ctx.shadowColor = 'rgba(255, 105, 180, 0.5)';
+               ctx.shadowBlur = 8;
+               ctx.fill();
+               ctx.restore();
+           }
+       }
+
+       const petals = Array.from({ length: 45 }, () => new Petal());
+
+       function animatePetals() {
+           ctx.clearRect(0, 0, canvas.width, canvas.height);
+           petals.forEach(p => {
+               p.update();
+               p.draw();
+           });
+           requestAnimationFrame(animatePetals);
+       }
+       animatePetals();
+
+       // 6. СЕРДЕЧКИ ПРИ ДВИЖЕНИИ МЫШКИ / КАСАНИИ
+       let lastHeartTime = 0;
+       window.addEventListener('mousemove', (e) => {
+           const now = Date.now();
+           if (now - lastHeartTime < 90) return;
+           lastHeartTime = now;
+
+           const heart = document.createElement('div');
+           heart.className = 'cursor-heart';
+           const symbols = ['♥️', '✨', '🌸', '💖'];
+           heart.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+           heart.style.left = (e.clientX - 8) + 'px';
+           heart.style.top = (e.clientY - 8) + 'px';
+           document.body.appendChild(heart);
+
+           setTimeout(() => heart.remove(), 1000);
+       });
+   </script>
+</body>
+</html>
